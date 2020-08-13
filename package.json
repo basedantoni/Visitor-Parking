@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server.js"
+    "server": "nodemon --exec babel-node src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +16,10 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.4",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0"
   }
 }
