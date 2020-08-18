@@ -5,7 +5,7 @@ import bcrypt, { hash } from 'bcrypt';
 const router = Router();
 
 // @@ POST
-// Desc Register a new user
+// DESC Register a new user
 router.post('/register', async(req, res) => {
   try {
     const { name, password, email } = req.body;
@@ -28,7 +28,7 @@ router.post('/register', async(req, res) => {
 });
 
 // @@ POST
-// Desc Login a user
+// DESC Login a user
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
