@@ -4,37 +4,54 @@ import bcrypt, { hash } from 'bcrypt';
 
 const router = Router();
 
-router.get('/', async(req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM users')
-    res.send(result)
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-router.get('/:userId', (req, res) => {
-  return res.send(users[req.params.userId])
-});
-
+// @@ POST
+// Desc Register a new user
 router.post('/register', async(req, res) => {
   try {
     const { name, password, email } = req.body;
-    let passwordHashed;
 
-    bcrypt.hash(password, 4, (err, hash) => {
-      err ? console.error(err) : passwordHashed = hash
-    })
+    const users = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
-    const text = 'INSERT INTO users(password, name, email) VALUES ($1, $2, $3)';
-    const values = [passwordHashed, name, email];
-    const result = await pool.query(text, values)
-    console.log(result)
-    res.json(result);
+    if(users.rowCount) {
+      return res.status(400).json({ email: 'Email already exists'});
+    } else {
+      bcrypt.hash(password, 10, async(err, hash) => {
+        const text = 'INSERT INTO users(password, name, email) VALUES ($1, $2, $3)';
+        const values = [hash, name, email];
+        const result = await pool.query(text, values)
+        res.json(result);
+      })
+    }
   } catch (err) {
     console.error(err.message);
   }
 });
+
+// @@ POST
+// Desc Login a user
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const users = await pool.query('SELECT password FROM users WHERE email = $1', [email]);
+
+    if(!users.rowCount) {
+      res.status(400).json({ email: 'This email does not exist' });
+    }
+
+    let passwordToMatch = users.rows[0].password;
+    bcrypt.compare(password, passwordToMatch).then(isMatch => {
+      if(isMatch) {
+        res.json({ success: 'user exists' })
+      } else {
+        return res.status(400).json({ error: 'Incorrect password' })
+      }
+    })
+
+  } catch (err) {
+    console.error(err)
+  }
+})
 
 router.put('/:userId', (req, res) => res.send('PUT HTTP method on user resource'));
 
