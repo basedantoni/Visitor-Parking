@@ -8,7 +8,7 @@ const router = Router();
 router.get('/', async(req, res) => {
   try {
     const text = 'SELECT * FROM cars WHERE vuid = $1';
-    value = [/* VUID */]
+    const value = [/* VUID */]
   } catch (err) {
     console.error(err);
   }

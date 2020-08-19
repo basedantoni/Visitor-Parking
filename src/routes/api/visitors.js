@@ -4,11 +4,11 @@ import pool from '../../db';
 const router = Router();
 
 //@@ GET
-//DESC Get all visitors
-router.get('/', async(req, res) => {
+//DESC Get all user's visitors
+router.get('/:userId', async(req, res) => {
   try {
     const text = 'SELECT * FROM visitors WHERE uuid = $1';
-    values = [/* UUID */]
+    const values = [/* UUID */]
   } catch (err) {
     console.error(err);
   }

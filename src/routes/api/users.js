@@ -19,7 +19,7 @@ router.post('/register', async(req, res) => {
         const text = 'INSERT INTO users(password, name, email) VALUES ($1, $2, $3)';
         const values = [hash, name, email];
         const result = await pool.query(text, values)
-        res.json(result);
+        return res.json(result);
       })
     }
   } catch (err) {
@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
     const users = await pool.query('SELECT password FROM users WHERE email = $1', [email]);
 
     if(!users.rowCount) {
-      res.status(400).json({ email: 'This email does not exist' });
+      return res.status(400).json({ email: 'This email does not exist' });
     }
 
     let passwordToMatch = users.rows[0].password;
