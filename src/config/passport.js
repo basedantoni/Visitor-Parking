@@ -25,7 +25,7 @@ const initialize = (passport) => {
 
   passport.use(new Strategy({ usernameField: 'email' }, authenticateUser));
   passport.serializeUser((user, done) => done(null, user.rows[0].uuid));
-  passport.deserializeUser(async(id, done) => { 
+  passport.deserializeUser(async(id, done) => {
     return done(null, await pool.query('SELECT * FROM users WHERE uuid = $1', [id]));
   });
 }

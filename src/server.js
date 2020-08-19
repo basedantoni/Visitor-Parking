@@ -46,7 +46,10 @@ const checkNotAuthenticated = (req, res, next) => req.isAuthenticated() ? res.re
 
 // ROUTES FOR HBS
 app.get('/', (req, res) => res.render('index.html'));
-app.get('/profile', checkAuthenticated, (req, res) => res.render('profile.html', { user: req.user }));
+app.get('/profile', checkAuthenticated, (req, res) => {
+  //console.log(req.session)
+  res.render('profile.html', { user: req.user })
+});
 app.get('/newvisitor', checkAuthenticated, (req, res) => res.render('newvisitor.html'));
 app.get('/register', checkNotAuthenticated, (req, res) => res.render('register.html'));
 app.get('/login', checkNotAuthenticated, (req, res) => res.render('login.html'));

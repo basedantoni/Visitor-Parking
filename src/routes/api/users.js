@@ -20,7 +20,8 @@ router.post('/register', async(req, res) => {
         const text = 'INSERT INTO users(password, name, email) VALUES ($1, $2, $3)';
         const values = [hash, name, email];
         const result = await pool.query(text, values)
-        return res.json(result);
+        console.log(result)
+        return res.redirect('/login');
       })
     }
   } catch (err) {

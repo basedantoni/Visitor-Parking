@@ -7,12 +7,13 @@
 </head>
 <body>
   <h1>Visitor Parking for James on 1st</h1>
-  <form class="visitor-form" method="post">
-    <input type="text" placeholder="Full Name" autocomplete="name">
-    <input type="text" placeholder="Car Make">
-    <input type="text" placeholder="Car Model">
-    <input type="text" placeholder="Car Color">
-    <input type="text" placeholder="License Plate">
+  <form class="visitor-form" method="post" action="/api/visitors/new-visitor">
+    <input name="name" type="text" required placeholder="Full Name" autocomplete="name">
+    <input name="make" type="text" required placeholder="Car Make">
+    <input name="model" type="text" required placeholder="Car Model">
+    <input name="color" type="text" required placeholder="Car Color">
+    <input name="plate" type="text" required placeholder="License Plate">
+    <button type="submit">Submit</button>
   </form>
 </body>
 </html>
