@@ -7,6 +7,13 @@
 </head>
 <body>
   <h1>Visitor Parking for James on 1st</h1>
+  <h2>Profile</h2>
+  {{#if user.rows}}
+    <p>Hi, {{ user.rows.[0].name }}</p>
+  {{/if}}
   <a href="/newvisitor">New Visitor</a>
+  <form action="/logout?_method=DELETE" method="POST">
+    <button type="submit">Logout</button>
+  </form>
 </body>
 </html>

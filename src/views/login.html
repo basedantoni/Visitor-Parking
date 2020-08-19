@@ -7,12 +7,15 @@
 </head>
 <body>
   <h1>Visitor Parking for James on 1st</h1>
-  <h2>Register</h2>
-  <form class="register-form" method="post" action="/api/users/register">
-    <input name="name" id="name" type="text" placeholder="Full Name" autocomplete="name" required>
+  <h2>Login</h2>
+  {{#if messages.error}}
+    <p>{{messages.error}}</p>
+  {{/if}}
+  <form class="login-form" method="post" action="/api/users/login">
     <input name="email" id="email" type="text" placeholder="Email" required>
     <input name="password" id="password" type="password" placeholder="Password" required>
-    <button type="submit">Register</button>
+    <button type="submit">Login</button>
   </form>
+  <p>New User?<a href="/register">Register</a></p>
 </body>
 </html>

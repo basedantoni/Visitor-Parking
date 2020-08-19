@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import pool from '../../db';
 import bcrypt, { hash } from 'bcrypt';
+import passport from 'passport';
 
 const router = Router();
 
@@ -24,37 +25,23 @@ router.post('/register', async(req, res) => {
     }
   } catch (err) {
     console.error(err.message);
+    res.redirect('/register')
   }
 });
 
 // @@ POST
 // DESC Login a user
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const users = await pool.query('SELECT password FROM users WHERE email = $1', [email]);
-
-    if(!users.rowCount) {
-      return res.status(400).json({ email: 'This email does not exist' });
-    }
-
-    let passwordToMatch = users.rows[0].password;
-    bcrypt.compare(password, passwordToMatch).then(isMatch => {
-      if(isMatch) {
-        res.json({ success: 'user exists' })
-      } else {
-        return res.status(400).json({ error: 'Incorrect password' })
-      }
-    })
-
-  } catch (err) {
-    console.error(err)
-  }
-})
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/profile',
+  failureRedirect: '/login',
+  failureFlash: true
+}));
 
 router.put('/:userId', (req, res) => res.send('PUT HTTP method on user resource'));
 
-router.delete('/:userId', (req, res) => res.send('DELETE HTTP method on user resource'));
+router.delete('/logout', (req, res) => {
+  req.logOut();
+  res.redirect('/login');
+});
 
 export default router;
