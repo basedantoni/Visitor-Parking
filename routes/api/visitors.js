@@ -4,6 +4,21 @@ import controller from '../../controllers/controller';
 
 const router = Router();
 
+//@@ GET
+//DESC Get VUID for session
+router.get('/vuid', async(req, res) => {
+  try {
+    const { name } = req.query;
+    const vuid = await pool.query('SELECT vuid FROM visitors WHERE name = $1', [name]);
+
+    req.session.vuid = vuid.rows[0].vuid;
+    return res.redirect('/newcar');
+
+  } catch (err) {
+    console.error(err);
+  }
+})
+
 //@@ POST
 //DESC Register new visitor
 router.post('/new-visitor', async(req, res) => {
@@ -25,7 +40,7 @@ router.post('/new-visitor', async(req, res) => {
       // Add car to new visitors cars
       await pool.query('INSERT INTO cars VALUES ($1, $2, $3, $4, $5)', [make, model, color, plate, vuid.rows[0].vuid]);
 
-      res.redirect('/profile');
+      return res.redirect('/profile');
     }
   } catch (err) {
     console.error(err);

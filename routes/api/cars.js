@@ -19,12 +19,14 @@ router.get('/', async(req, res) => {
 router.post('/new-car', async(req, res) => {
   try {
     const { make, model, color, plate } = req.body;
+    const vuid = req.session.vuid;
 
     const text = 'INSERT INTO cars VALUES ($1, $2, $3, $4, $5)';
-    const values = [make, model, color, plate, /* need to add VUID */];
+    const values = [make, model, color, plate, vuid];
 
-    const result = await pool.query(text, values);
-    res.json(result);
+    await pool.query(text, values);
+
+    return res.redirect('/profile');
   } catch (err) {
     console.error(err);
   }

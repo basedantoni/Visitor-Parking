@@ -6,7 +6,6 @@ exports.renderProfile = async(req, res) => {
     const text = 'SELECT vuid, name FROM visitors WHERE uuid = $1';
     const values = [uuid];
     const result = await pool.query(text, values);
-    console.log(result)
 
     result.rowCount ? res.render('profile.html', { visitors: result.rows, user: req.user }) 
       : res.render('profile.html', { visitors: 'No visitors yet', user: req.user })
@@ -15,7 +14,6 @@ exports.renderProfile = async(req, res) => {
   }
 }
 
-exports.renderNewCar = async(req, res) => {
-  console.log(req.session)
-  res.render('newcar.html')
+exports.renderNewCar = (req, res) => {
+  return res.render('newcar.html')
 }
