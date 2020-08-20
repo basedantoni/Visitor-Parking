@@ -10,6 +10,7 @@ import flash from 'express-flash';
 import expressSession from 'express-session';
 import methodOverride from 'method-override';
 
+import controller from './controllers/controller';
 import initializePassport from './config/passport';
 import users from './routes/api/users';
 import visitors from './routes/api/visitors';
@@ -30,7 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(cors());
 app.use(logger('dev'));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(expressSession({
   secret: process.env.SECRET,
@@ -46,13 +47,11 @@ const checkNotAuthenticated = (req, res, next) => req.isAuthenticated() ? res.re
 
 // ROUTES FOR HBS
 app.get('/', (req, res) => res.render('index.html'));
-app.get('/profile', checkAuthenticated, (req, res) => {
-  //console.log(req.session)
-  res.render('profile.html', { user: req.user })
-});
+app.get('/profile', checkAuthenticated, controller.renderProfile);
 app.get('/newvisitor', checkAuthenticated, (req, res) => res.render('newvisitor.html'));
 app.get('/register', checkNotAuthenticated, (req, res) => res.render('register.html'));
 app.get('/login', checkNotAuthenticated, (req, res) => res.render('login.html'));
+app.get('/newcar', checkAuthenticated, controller.renderNewCar);
 
 // ROUTES
 app.use('/api/users', users);

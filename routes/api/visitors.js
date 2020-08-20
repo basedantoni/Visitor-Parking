@@ -1,21 +1,8 @@
 import { Router } from 'express';
 import pool from '../../db';
+import controller from '../../controllers/controller';
 
 const router = Router();
-
-//@@ GET
-//DESC Get all user's visitors
-router.get('/', async(req, res) => {
-  try {
-    const uuid = req.session.passport.user;
-    const text = 'SELECT * FROM visitors WHERE uuid = $1';
-    const values = [uuid];
-    const result = await pool.query(text, values);
-    console.log(result)
-  } catch (err) {
-    console.error(err);
-  }
-})
 
 //@@ POST
 //DESC Register new visitor
@@ -38,7 +25,7 @@ router.post('/new-visitor', async(req, res) => {
       // Add car to new visitors cars
       await pool.query('INSERT INTO cars VALUES ($1, $2, $3, $4, $5)', [make, model, color, plate, vuid.rows[0].vuid]);
 
-      res.render('')
+      res.redirect('/profile');
     }
   } catch (err) {
     console.error(err);
