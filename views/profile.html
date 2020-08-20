@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="text/javascript" src="../js/newCar.js"></script>
   <title>James on 1st Visitor Parking</title>
 </head>
   <body>
@@ -14,14 +13,15 @@
     {{/if}}
     <h2>Visitors</h2>
     {{#each visitors}}
-      <div>
+      <div class="visitor-card">
         <p>Name: {{ this.name }}</p>
-        <a class="car-btn" id="{{ this.name }}" href="/newcar">Add a car</a>
+        <button class="car-btn" id="{{ this.name }}">Add a car</button>
       </div>
     {{/each}}
     <a href="/newvisitor">New Visitor</a>
     <form action="api/users/logout?_method=DELETE" method="POST">
       <button type="submit">Logout</button>
     </form>
+    <script type="text/javascript" src="../js/newCar.js"></script>
   </body>
 </html>
