@@ -1,8 +1,28 @@
 import { Router } from 'express';
 import pool from '../../db';
-import controller from '../../controllers/controller';
+import sendEmail from '../../public/js/email';
 
 const router = Router();
+
+router.get('/book-visitor', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT users.name, cars.make, cars.model, cars.color, cars.license_plate FROM cars, users WHERE cars.vuid = '${req.session.vuid}' and users.uuid = '${req.session.passport.user}'`)
+    console.log(result)
+    const visitInfo = {
+      name: result.rows[0].name,
+      visitor: req.query.name,
+      make: result.rows[0].make,
+      model: result.rows[0].model,
+      color: result.rows[0].color,
+      plate: result.rows[0].license_plate,
+      date: req.query.date
+    }
+    sendEmail(visitInfo);
+    res.redirect('/profile');
+  } catch (err) {
+    console.error(err);
+  }
+})
 
 //@@ GET
 //DESC Get VUID for session

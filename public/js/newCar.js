@@ -3,16 +3,19 @@ const bookButton = document.querySelectorAll('.book-btn');
 
 cardButton.forEach(btn => {
   btn.addEventListener('click', async e => {
-    res = await fetch(`/api/visitors/vuid?name=${e.srcElement.id}`)
+    await fetch(`/api/visitors/vuid?name=${e.srcElement.id}`)
     location.href = "/newcar";
   });
 })
 
 bookButton.forEach(btn => {
-  btn.addEventListener('click', e => {
+  btn.addEventListener('click', async e => {
     const isBooking = confirm(`Book ${e.srcElement.id}?`);
     if(isBooking) {
-      console.log('YAY')
+      await fetch(`/api/visitors/vuid?name=${e.srcElement.id}`);
+
+      const date = new Date();
+      const res = await fetch(`api/visitors/book-visitor?name=${e.srcElement.id}&date=${date.toDateString()}`);
     }
   })
 })
